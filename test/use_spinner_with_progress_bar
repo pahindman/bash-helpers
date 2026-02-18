@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+source progress_bar.bash
+source spinner.bash
+
+time=0.1
+total_work=10
+
+automatic_spinner::start_at_cursor "Automatic spinner..." 0.1
+
+progress_bar::start
+for ((i = 0; i < total_work; i++)); do
+	sleep "$time"
+	progress_bar::update -c "work done " -n "$i" -t "$total_work"
+done
+progress_bar::update -c "work done " -n "$total_work" -t "$total_work"
+progress_bar::stop
+
+spinner::stop "done"
+
+manual_spinner::start_at_cursor "Manual spinner..."
+
+progress_bar::start
+for ((i = 0; i < total_work; i++)); do
+	sleep "$time"
+	progress_bar::update -c "work done " -n "$i" -t "$total_work"
+	manual_spinner::tick
+done
+progress_bar::update -c "work done " -n "$total_work" -t "$total_work"
+progress_bar::stop
+
+spinner::stop "done"
