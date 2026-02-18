@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+source terminal.bash
+source trap.bash
+
+# If no margin size was provided, default to 5
+num=${1:-5}
+
+trap::append_handler_for_signal 'terminal::bottom_margin::reserve $num $LINES' SIGWINCH
+trap::append_handler_for_signal 'terminal::bottom_margin::erase $num $LINES' EXIT
+trap::append_handler_for_signal 'terminal::bottom_margin::reserve 0 $LINES' EXIT
+
+terminal::bottom_margin::reserve "$num" "$LINES"
+
+for ((i=1; i <= num; i++)); do
+	terminal::bottom_margin::replace_line "$i" "$LINES" "This is line $i of the margin, $((num-i)) lines from the bottom"
+done
+
+read -rsn 1 -p "There is a $num-line margin at the bottom.  Press any key to see content above the margin scroll up and the last line of the margin get updated."
+echo
+
+for ((i = 0; i < LINES; i++)); do
+	echo "New content on terminal line $((i - num))"
+done
+echo -n "New content on terminal line $((LINES - num))"
+
+terminal::bottom_margin::replace_line "$num" "$LINES" "This is the bottom of the margin, and the content above the margin has scrolled up.  Press any key to see the margin content get updated."
+
+read -rsn 1
+
+for ((i=1; i <= num; i++)); do
+	if ((i==1)); then
+		terminal::bottom_margin::replace_line "$i" "$LINES" "This is the top of the updated margin, but the content above has not been affected."
+	elif ((i==num)); then
+		terminal::bottom_margin::replace_line "$i" "$LINES" "This is the bottom of the updated margin.  Press any key to clear the margin..."
+	else
+		terminal::bottom_margin::replace_line "$i" "$LINES" "."
+	fi
+done
+
+read -rsn 1
+
+terminal::bottom_margin::erase "$num" "$LINES"
+trap::remove_handler_for_signal 'terminal::bottom_margin::erase $num $LINES' EXIT
+
+
+terminal::bottom_margin::replace_line 1 "$LINES" "Now the margin has been cleared, except for this line at the top.  Press any key to continue..."
+
+read -rsn 1
+
+terminal::bottom_margin::reserve 0 "$LINES"
+trap::append_handler_for_signal 'terminal::bottom_margin::reserve 0 $LINES' EXIT
+
+echo
+for ((i = 0; i < 10; i++)); do
+	echo "New content..."
+done
+
+echo "Now the new content has scrolled into this area, where the margin used to be."
