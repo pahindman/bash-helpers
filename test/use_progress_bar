@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+source progress_bar.bash
+
+do-work() {
+	local time=0.1
+	local total_work=10
+	local i
+	for ((i = 0; i < total_work; i++)); do
+		sleep "$time"
+		progress_bar::update -c "work done" -n "$i" -t "$total_work" >&2
+	done
+	progress_bar::update -c "work done" -n "$total_work" -t "$total_work" >&2
+}
+
+do-work-with-margin-progress-bar() {
+	progress_bar::start
+	do-work
+	progress_bar::stop
+}
+
+do-work-with-margin-progress-bar
