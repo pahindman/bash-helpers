@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+source spinner.bash
+
+tick_time=0.1
+total_work=10
+
+automatic_spinner::start_at_cursor "Automatic spinner at cursor..." "$tick_time"
+sleep 1
+spinner::stop "done"
+
+automatic_spinner::start_in_margin "Automatic spinner in margin..." "$tick_time"
+sleep 1
+spinner::stop "done"
+
+manual_spinner::start_at_cursor "Manual spinner at cursor..."
+for ((i = 0; i < total_work; i++)); do
+	sleep "$tick_time"
+	manual_spinner::tick
+done
+spinner::stop "done"
+
+manual_spinner::start_in_margin "Manual spinner in margin..."
+for ((i = 0; i < total_work; i++)); do
+	sleep "$tick_time"
+	manual_spinner::tick
+done
+spinner::stop "done"
