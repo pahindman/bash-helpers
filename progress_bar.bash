@@ -72,11 +72,11 @@ progress_bar_internal::generate_progress_bar_string() {
 
 	if [ -z "$num" ]; then
 		echo 'missing num argument' >&2
-		exit 1
+		return 1
 	fi
 	if [ -z "$total" ]; then
 		echo 'missing total argument' >&2
-		exit 1
+		return 1
 	fi
 
 	local perc_done=$((num * 100 / total))
