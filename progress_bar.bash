@@ -105,6 +105,9 @@ progress_bar_internal::generate_progress_bar_string() {
 	local prefix="$caption $stats"
 	local suffix=""
 	local length=$((COLUMNS - ${#prefix} - ${#suffix} - 3)) # 3 extra chars for the brackets and space
+	if [ "$length" -lt 0 ]; then
+		length=0
+	fi
 	local num_bars=$((perc_done * length / 100))
 
 	local reverse_on=$'\x1b[7m'
