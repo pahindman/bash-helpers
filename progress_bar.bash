@@ -78,6 +78,26 @@ progress_bar_internal::generate_progress_bar_string() {
 		echo 'missing total argument' >&2
 		return 1
 	fi
+	if ! [[ "$num" =~ ^-?[0-9]+$ ]]; then
+		echo "invalid num argument: '$num'" >&2
+		return 1
+	fi
+	if ! [[ "$total" =~ ^[0-9]+$ ]]; then
+		echo "invalid total argument: '$total'" >&2
+		return 1
+	fi
+	if [ "$total" -eq 0 ]; then
+		echo 'total argument must be greater than 0' >&2
+		return 1
+	fi
+	if [ "$num" -lt 0 ]; then
+		echo "num argument must be greater than or equal to 0: '$num'" >&2
+		return 1
+	fi
+	if [ "$num" -gt "$total" ]; then
+		echo "num argument must be less than or equal to total: '$num' > '$total'" >&2
+		return 1
+	fi
 
 	local perc_done=$((num * 100 / total))
 	local stats
