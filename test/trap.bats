@@ -67,7 +67,7 @@ teardown() {
 	source trap.bash
 	trap::append_handler_for_signal 'echo   "  hello"  ' EXIT
 	run trap -p EXIT
-	assert_output --partial "echo   "  hello"  "
+	assert_output --partial 'echo   "  hello"  '
 }
 
 @test "removing handler with whitespace works" {
@@ -75,5 +75,5 @@ teardown() {
 	trap::append_handler_for_signal 'echo   "  hello"  ' EXIT
 	trap::remove_handler_for_signal 'echo   "  hello"  ' EXIT
 	run trap -p EXIT
-	refute_output --partial "echo   "  hello"  "
+	refute_output --partial 'echo   "  hello"  '
 }
