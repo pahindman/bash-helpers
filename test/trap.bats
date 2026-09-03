@@ -63,14 +63,14 @@ teardown() {
 	refute_output --partial "second_test_handler"
 }
 
-@test "adding handler with whitepace works" {
+@test "adding handler with whitespace works" {
 	source trap.bash
 	trap::append_handler_for_signal 'echo   "  hello"  ' EXIT
 	run trap -p EXIT
 	assert_output --partial "echo   "  hello"  "
 }
 
-@test "removing handler with whitepace works" {
+@test "removing handler with whitespace works" {
 	source trap.bash
 	trap::append_handler_for_signal 'echo   "  hello"  ' EXIT
 	trap::remove_handler_for_signal 'echo   "  hello"  ' EXIT
