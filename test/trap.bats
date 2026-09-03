@@ -43,6 +43,15 @@ teardown() {
 	refute_output --partial "second_test_handler"
 }
 
+@test "removing a handler that is not present is a no-op" {
+	source trap.bash
+	trap::append_handler_for_signal first_test_handler EXIT
+	trap::remove_handler_for_signal second_test_handler EXIT
+	run trap -p EXIT
+	assert_output --partial "first_test_handler"
+	refute_output --partial "second_test_handler"
+}
+
 @test "appending another copy of first handler works" {
 	source trap.bash
 	trap::append_handler_for_signal first_test_handler EXIT
