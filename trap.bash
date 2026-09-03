@@ -59,8 +59,7 @@ trap::remove_handler_for_signal() {
 	if [ -n "$existing_handler" ]; then
 		local updated_handler
 
-		# Remove last handler_to_remove and clean up any leading or trailing semicolons and whitespace
-		updated_handler=$(echo "$existing_handler" | sed "s/\(.*\)$handler_to_remove/\1/;s/^[; ]*//;s/[; ]*$//;s/;;*/;/g")
+		updated_handler=$(trap_internal::remove_last_handler "$existing_handler" "$handler_to_remove")
 
 		if [ -n "$updated_handler" ]; then
 			# shellcheck disable=SC2064
@@ -80,4 +79,47 @@ trap_internal::get_handler_for_signal() {
 	handler=${handler#*\'}
 	handler=${handler%%\'*}
 	echo "$handler"
+}
+
+trap_internal::remove_last_handler() {
+	local existing_handler=$1
+	local handler_to_remove=$2
+	local match_start=-1
+	local match_end=-1
+	local existing_handler_length=${#existing_handler}
+	local handler_to_remove_length=${#handler_to_remove}
+	local i
+
+	for ((i = 0; i <= existing_handler_length - handler_to_remove_length; i++)); do
+		if [ "${existing_handler:$i:$handler_to_remove_length}" != "$handler_to_remove" ]; then
+			continue
+		fi
+
+		local char_before=
+		local char_after=
+		if [ "$i" -gt 0 ]; then
+			char_before=${existing_handler:$((i - 1)):1}
+		fi
+		if [ $((i + handler_to_remove_length)) -lt "$existing_handler_length" ]; then
+			char_after=${existing_handler:$((i + handler_to_remove_length)):1}
+		fi
+
+		if { [ -z "$char_before" ] || [ "$char_before" = ';' ]; } &&
+			{ [ -z "$char_after" ] || [ "$char_after" = ';' ]; }; then
+			match_start=$i
+			match_end=$((i + handler_to_remove_length))
+		fi
+	done
+
+	if [ "$match_start" -lt 0 ]; then
+		echo "$existing_handler"
+		return 0
+	fi
+
+	local updated_handler=${existing_handler:0:$match_start}${existing_handler:$match_end}
+	updated_handler=${updated_handler//;;/;}
+	updated_handler=${updated_handler#;}
+	updated_handler=${updated_handler%;}
+
+	echo "$updated_handler"
 }
