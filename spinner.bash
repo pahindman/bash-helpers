@@ -25,7 +25,8 @@
 #     # Your long-running command here
 #     spinner::stop "done"
 
-source terminal.bash
+spinner_internal__SOURCE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source "${spinner_internal__SOURCE_DIR}/terminal.bash"
 
 ### Public API ###
 
@@ -137,7 +138,8 @@ spinner_internal::tell_spinner_to_quit() {
 	fi
 }
 
-source trap.bash
+source "${spinner_internal__SOURCE_DIR}/trap.bash"
+unset spinner_internal__SOURCE_DIR
 automatic_spinner::internal::print_in_margin() {
 	local message=$1
 	local sleep_time=$2

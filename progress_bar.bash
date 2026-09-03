@@ -48,8 +48,10 @@ progress_bar::stop() {
 
 ### Private internals ###
 
-source terminal.bash
-source trap.bash
+progress_bar_internal__SOURCE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source "${progress_bar_internal__SOURCE_DIR}/terminal.bash"
+source "${progress_bar_internal__SOURCE_DIR}/trap.bash"
+unset progress_bar_internal__SOURCE_DIR
 
 progress_bar_internal::generate_progress_bar_string() {
 	local caption='Progress:'
