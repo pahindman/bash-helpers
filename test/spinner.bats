@@ -10,14 +10,28 @@ setup() {
 
 	do_work_with_automatic_spinner_at_cursor() {
 		source spinner.bash
-		automatic_spinner::start_at_cursor "Spinner..." 0.1
+		automatic_spinner::start_at_cursor "Spinner..."
 		do_work
 		spinner::stop "done"
 	}
 
 	do_work_with_automatic_spinner_in_margin() {
 		source spinner.bash
-		automatic_spinner::start_in_margin "Spinner..." 0.1
+		automatic_spinner::start_in_margin "Spinner..."
+		do_work
+		spinner::stop "done"
+	}
+
+	do_work_with_automatic_spinner_at_cursor_and_custom_sleep_time() {
+		source spinner.bash
+		automatic_spinner::start_at_cursor "Spinner..." 0.2
+		do_work
+		spinner::stop "done"
+	}
+
+	do_work_with_automatic_spinner_in_margin_and_custom_sleep_time() {
+		source spinner.bash
+		automatic_spinner::start_in_margin "Spinner..." 0.2
 		do_work
 		spinner::stop "done"
 	}
@@ -46,6 +60,11 @@ teardown() {
 	assert_success
 }
 
+@test "automatic spinner at cursor with custom sleep time runs without error" {
+	run --separate-stderr do_work_with_automatic_spinner_at_cursor_and_custom_sleep_time
+	assert_success
+}
+
 @test "automatic spinner at cursor prints start message" {
 	run --separate-stderr do_work_with_automatic_spinner_at_cursor
 	assert_stderr --regexp "Spinner...[ \b/\\|-]+"
@@ -63,6 +82,11 @@ teardown() {
 
 @test "automatic spinner in margin runs without error" {
 	run --separate-stderr do_work_with_automatic_spinner_in_margin 3>&-
+	assert_success
+}
+
+@test "automatic spinner in margin with custom sleep time runs without error" {
+	run --separate-stderr do_work_with_automatic_spinner_in_margin_and_custom_sleep_time 3>&-
 	assert_success
 }
 

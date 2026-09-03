@@ -32,7 +32,7 @@ source "${spinner_internal__SOURCE_DIR}/terminal.bash"
 
 automatic_spinner::start_at_cursor() {
 	local message=$1
-	local sleep_time=$2
+	local sleep_time=${2:-0.1}
 	shift 2
 	local spinner_chars=("${@:-${spinner_internal__DEFAULT_SPINNER_CHARS[@]}}")
 
@@ -47,7 +47,7 @@ automatic_spinner::start_at_cursor() {
 
 automatic_spinner::start_in_margin() {
 	local message=$1
-	local sleep_time=$2
+	local sleep_time=${2:-0.1}
 	shift 2
 	local spinner_chars=("${@:-${spinner_internal__DEFAULT_SPINNER_CHARS[@]}}")
 
