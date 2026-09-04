@@ -4,6 +4,9 @@ setup() {
 	load 'test_helper/bats-support/load'
 	load 'test_helper/bats-assert/load'
 
+	LINES=24
+	COLUMNS=80
+
 	do_work() {
 		local time=0.01
 		local total_work=10
