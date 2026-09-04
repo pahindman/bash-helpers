@@ -1,6 +1,7 @@
 #!/bin/bash
-# This file implements a simple spinner to show progress during long-running operations.
+# This file implements simple spinners to show progress during long-running operations.
 # It can be sourced in other scripts to provide a visual indication of progress.
+# - There are two types: automatic_spinner and manual spinner.
 # - Call start_at_cursor with a message that will be displayed at the current
 #   cursor location, with a spinner next to it.
 #   OR
@@ -9,6 +10,10 @@
 # - Do your long-running work and the spinner will continue to be displayed.  If the
 #   long-running work outputs information to the terminal then it will be interleaved with
 #   the 'at_cursor' spinner.  Use the 'in_margin' spinner to avoid interleaved output.
+# - The automatic_spinner runs in a background process, continuously updating the spinner
+#   until it is stopped.
+# - The manual_spinner does not start a background process, it updates the spinner when
+#   the foreground process calls manual_spinner::tick.
 # - Call stop_spinner to stop the spinner.  The 'at_cursor' spinner will print a
 #   configurable completion message and the output will stay visible.  The 'in_margin'
 #   spinner will be erased and the margin removed.
