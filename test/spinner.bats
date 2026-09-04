@@ -58,92 +58,96 @@ teardown() {
 	:
 }
 
+# The code under test uses subshells, and the bats EXIT handler will output TAP data to FD
+# 3, which will duplicate the TAP data that the parent shell EXIT handler produces.  The
+# following tests redirect the run command's FD 3 to /dev/null to prevent those problems.
+
 @test "automatic spinner at cursor runs without error" {
-	run --separate-stderr do_work_with_automatic_spinner_at_cursor
+	run --separate-stderr do_work_with_automatic_spinner_at_cursor 3>/dev/null
 	assert_success
 }
 
 @test "automatic spinner at cursor with custom sleep time runs without error" {
-	run --separate-stderr do_work_with_automatic_spinner_at_cursor_and_custom_sleep_time
+	run --separate-stderr do_work_with_automatic_spinner_at_cursor_and_custom_sleep_time 3>/dev/null
 	assert_success
 }
 
 @test "automatic spinner at cursor prints start message" {
-	run --separate-stderr do_work_with_automatic_spinner_at_cursor
+	run --separate-stderr do_work_with_automatic_spinner_at_cursor 3>/dev/null
 	assert_stderr --regexp "Spinner...[ \b/\\|-]+"
 }
 
 @test "automatic spinner at cursor does not prevent normal output" {
-	run --separate-stderr do_work_with_automatic_spinner_at_cursor
+	run --separate-stderr do_work_with_automatic_spinner_at_cursor 3>/dev/null
 	assert_output "did some work"
 }
 
 @test "automatic spinner at cursor prints done message" {
-	run --separate-stderr do_work_with_automatic_spinner_at_cursor
+	run --separate-stderr do_work_with_automatic_spinner_at_cursor 3>/dev/null
 	assert_stderr --regexp "done$"
 }
 
 @test "automatic spinner in margin runs without error" {
-	run --separate-stderr do_work_with_automatic_spinner_in_margin 3>&-
+	run --separate-stderr do_work_with_automatic_spinner_in_margin 3>/dev/null
 	assert_success
 }
 
 @test "automatic spinner in margin with custom sleep time runs without error" {
-	run --separate-stderr do_work_with_automatic_spinner_in_margin_and_custom_sleep_time 3>&-
+	run --separate-stderr do_work_with_automatic_spinner_in_margin_and_custom_sleep_time 3>/dev/null
 	assert_success
 }
 
 @test "automatic spinner in margin prints start message" {
-	run --separate-stderr do_work_with_automatic_spinner_in_margin 3>&-
+	run --separate-stderr do_work_with_automatic_spinner_in_margin 3>/dev/null
 	assert_stderr --partial "Spinner..."
 }
 
 @test "automatic spinner in margin does not prevent normal output" {
-	run --separate-stderr do_work_with_automatic_spinner_in_margin 3>&-
+	run --separate-stderr do_work_with_automatic_spinner_in_margin 3>/dev/null
 	assert_output "did some work"
 }
 
 @test "automatic spinner in margin prints done message" {
-	run --separate-stderr do_work_with_automatic_spinner_in_margin 3>&-
+	run --separate-stderr do_work_with_automatic_spinner_in_margin 3>/dev/null
 	assert_stderr --partial "done"
 }
 
 @test "manual spinner at cursor runs without error" {
-	run --separate-stderr do_work_with_manual_spinner_at_cursor
+	run --separate-stderr do_work_with_manual_spinner_at_cursor 3>/dev/null
 	assert_success
 }
 
 @test "manual spinner at cursor prints start message" {
-	run --separate-stderr do_work_with_manual_spinner_at_cursor
+	run --separate-stderr do_work_with_manual_spinner_at_cursor 3>/dev/null
 	assert_stderr --regexp "Spinner...[ \b/\\|-]+"
 }
 
 @test "manual spinner at cursor does not prevent normal output" {
-	run --separate-stderr do_work_with_manual_spinner_at_cursor
+	run --separate-stderr do_work_with_manual_spinner_at_cursor 3>/dev/null
 	assert_output "did some work"
 }
 
 @test "manual spinner at cursor prints done message" {
-	run --separate-stderr do_work_with_manual_spinner_at_cursor
+	run --separate-stderr do_work_with_manual_spinner_at_cursor 3>/dev/null
 	assert_stderr --regexp "done$"
 }
 
 @test "manual spinner in margin runs without error" {
-	run --separate-stderr do_work_with_manual_spinner_in_margin 3>&-
+	run --separate-stderr do_work_with_manual_spinner_in_margin 3>/dev/null
 	assert_success
 }
 
 @test "manual spinner in margin prints start message" {
-	run --separate-stderr do_work_with_manual_spinner_in_margin 3>&-
+	run --separate-stderr do_work_with_manual_spinner_in_margin 3>/dev/null
 	assert_stderr --partial "Spinner..."
 }
 
 @test "manual spinner in margin does not prevent normal output" {
-	run --separate-stderr do_work_with_manual_spinner_in_margin 3>&-
+	run --separate-stderr do_work_with_manual_spinner_in_margin 3>/dev/null
 	assert_output "did some work"
 }
 
 @test "manual spinner in margin prints done message" {
-	run --separate-stderr do_work_with_manual_spinner_in_margin 3>&-
+	run --separate-stderr do_work_with_manual_spinner_in_margin 3>/dev/null
 	assert_stderr --partial "done"
 }
