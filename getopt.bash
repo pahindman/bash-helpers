@@ -1,4 +1,3 @@
-#!/bin/sh
 # This script is a small wrapper around the 'getopt' tool and is designed to be sourced by
 # other scripts rather than executed directly. To use it from your own script, first
 # define the shell variables LONGOPTS, SHORTOPTS, PROGRAM_NAME, and PROGRAM_ARGUMENTS in
@@ -9,7 +8,7 @@
 #
 # Usage example:
 #
-#   #!/bin/bash
+#   #!/usr/bin/env bash
 #   LONGOPTS=help,opt:
 #   SHORTOPTS=ho:
 #   PROGRAM_NAME=$(basename "$0")
