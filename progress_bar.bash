@@ -2,13 +2,13 @@
 # This file implements a progress bar to show progress during long-running operations.
 # It can be sourced in other scripts and used to provide a visual indication of progress.
 # - Call progress_bar::start to initialize the progress bar.
-# - Call the progress_bar::update function to update the progress bar. It takes the following options:
+# - Call progress_bar::update to update the progress bar. It takes the following options:
 #     -b: character to use for the filled portion of the bar (default: '#')
 #     -c: string to use as the caption (prefix) for the progress bar (default: '')
 #     -e: character to use for the empty portion of the bar (default: ' ')
 #     -n: current progress (required)
 #     -t: total progress (required)
-# - Call stop_progress_bar to clean up the progress bar and restore the terminal configuration.
+# - Call progress_bar::stop to clean up the progress bar and restore the terminal configuration.
 # - Sourcing this script installs trap handlers for SIGWINCH and EXIT, preserving any
 #   existing handlers. If the sourcing script also installs trap handlers for SIGWINCH or
 #   EXIT (after sourcing this script) then it must preserve the trap handlers installed by
@@ -22,9 +22,9 @@
 #	  progress_bar::start
 #     for i in {1..100}; do
 #         sleep 0.1 # simulated work
-#         progress_bar::update_progress_bar -c "stuff " -n "$i" -t 100
+#         progress_bar::update -c "stuff " -n "$i" -t 100
 #     done
-#	  progress_bar::stop_progress_bar
+#	  progress_bar::stop
 
 ### Public API ###
 
