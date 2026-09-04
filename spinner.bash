@@ -192,9 +192,9 @@ automatic_spinner::internal::print_at_cursor() {
 		if read -t 0; then
 			IFS=$'\x1C' read -r msg1 msg2
 			if [ "$msg1" == "q" ]; then
-				printf "\b%s\n" "$msg2" >&2
 				terminal::show_cursor
 				trap::remove_handler_for_signal terminal::show_cursor EXIT
+				printf "\b%s\n" "$msg2" >&2
 				return 0
 			else
 				LINES=$msg1
@@ -251,9 +251,9 @@ manual_spinner::internal::print_at_cursor() {
 	while true; do
 		IFS=$'\x1C' read -r msg1 msg2
 		if [ "$msg1" == "q" ]; then
-			printf "\b%s\n" "$msg2" >&2
 			terminal::show_cursor
 			trap::remove_handler_for_signal terminal::show_cursor EXIT
+			printf "\b%s\n" "$msg2" >&2
 			return 0
 		else
 			LINES=$msg1
