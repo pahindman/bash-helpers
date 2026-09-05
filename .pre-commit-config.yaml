@@ -1,0 +1,11 @@
+repos:
+- repo: local
+  hooks:
+  - id: relevant-bats-tests
+    name: Run Relevant Bats Tests
+    entry: test/bats-precommit-wrapper
+    language: node
+    # This tells pre-commit to install bats automatically
+    additional_dependencies:
+      - bats@1.11.0
+    pass_filenames: true
