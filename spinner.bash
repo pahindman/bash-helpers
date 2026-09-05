@@ -234,7 +234,7 @@ manual_spinner::internal::print_in_margin() {
 			terminal::bottom_margin::replace_line 1 "$LINES" "${message}${spinner_char}"
 
 			# rotate spinner chars so that the next one will be different
-			spinner_chars=("${spinner_chars[@]:1}" "${spinner_char[0]}")
+			spinner_chars=("${spinner_chars[@]:1}" "${spinner_chars[0]}")
 		fi
 	done
 }
