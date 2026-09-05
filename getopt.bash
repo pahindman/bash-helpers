@@ -13,7 +13,7 @@
 #   SHORTOPTS=ho:
 #   PROGRAM_NAME=$(basename "$0")
 #
-#   . getopt.bash
+#   source getopt.bash
 #
 #   while true; do
 #       opt=$1
