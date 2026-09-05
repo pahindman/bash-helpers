@@ -4,7 +4,7 @@
 # - Call progress_bar::start to initialize the progress bar.
 # - Call progress_bar::update to update the progress bar. It takes the following options:
 #     -b: character to use for the filled portion of the bar (default: '#')
-#     -c: string to use as the caption (prefix) for the progress bar (default: '')
+#     -c: string to use as the caption (prefix) for the progress bar (default: 'Progress:')
 #     -e: character to use for the empty portion of the bar (default: ' ')
 #     -n: current progress (required)
 #     -t: total progress (required)
