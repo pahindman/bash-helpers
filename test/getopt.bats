@@ -11,6 +11,8 @@ teardown() {
 	:
 }
 
+# bats file_tags=getopt
+
 @test "passing no arguments and no options to use_getopt works" {
 	run use_getopt
 	assert_output $'option was set to: \nnon-option arguments: '

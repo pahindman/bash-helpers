@@ -7,6 +7,8 @@ teardown() {
 	:
 }
 
+# bats file_tags=trap
+
 @test "appending a handler for a signal that has no existing handlers works" {
 	source trap.bash
 	trap::append_handler_for_signal first_test_handler EXIT
