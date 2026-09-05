@@ -58,6 +58,8 @@ teardown() {
 	:
 }
 
+# bats file_tags=spinner,terminal,trap
+
 # The code under test uses subshells, and the bats EXIT handler will output TAP data to FD
 # 3, which will duplicate the TAP data that the parent shell EXIT handler produces.  The
 # following tests redirect the run command's FD 3 to /dev/null to prevent those problems.

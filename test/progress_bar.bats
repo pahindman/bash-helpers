@@ -31,6 +31,8 @@ teardown() {
 	:
 }
 
+# bats file_tags=progress_bar,terminal,trap
+
 @test "progress bar in margin runs without error" {
 	run do_work_with_margin_progress_bar
 	assert_success
