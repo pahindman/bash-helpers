@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+declare -A test_tags
+test_tags["getopt.bash"]="--filter-tags getopt"
+test_tags["progress_bar.bash"]="--filter-tags progress_bar"
+test_tags["spinner.bash"]="--filter-tags spinner"
+test_tags["terminal.bash"]="--filter-tags terminal"
+test_tags["trap.bash"]="--filter-tags trap"
+test_tags["test/getopt.bats"]="--filter-tags getopt"
+test_tags["test/progress_bar.bats"]="--filter-tags progress_bar"
+test_tags["test/spinner.bats"]="--filter-tags spinner"
+test_tags["test/terminal.bats"]="--filter-tags terminal"
+test_tags["test/trap.bats"]="--filter-tags trap"
+
+# Run all tests if the bats_wrapper changes
+test_tags["test/bats_wrapper"]="--filter-tags !__none__"
+
+for file in "$@"; do
+	# Only add tags for files that have an entry in the test_tags associative array.
+	# This way we avoid adding empty strings to the tags array that might cause all
+	# tests to be run.
+	if [[ -v test_tags[${file}] ]]; then
+		tags+=("${test_tags[${file}]}")
+	fi
+done
+
+# Only run bats if there are tags to filter by. If there are no tags, it means that none
+# of the changed files have corresponding tests, so we can skip running bats entirely.
+if [ ${#tags[@]} -gt 0 ]; then
+	# Deliberately disable SC2068 to allow for the expansion of the tags array, so that
+	# --filter-tags and the corresponding tag arguments are passed as separate arguments to
+	# the bats command.
+	# shellcheck disable=SC2068
+	bats test ${tags[@]}
+fi

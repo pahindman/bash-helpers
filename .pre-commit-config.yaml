@@ -1,0 +1,8 @@
+repos:
+- repo: local
+  hooks:
+  - id: relevant-bats-tests
+    name: Run Relevant Bats Tests
+    entry: test/bats_wrapper
+    language: system
+    pass_filenames: true
