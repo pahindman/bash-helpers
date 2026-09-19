@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 
-LONGOPTS=help,opt:
-SHORTOPTS=ho:
-PROGRAM_NAME=$(basename "$0")
-
-source getopt.bash
+source getopt.bash "ho:" "help,opt:" "$0" "$@"
 
 while true; do
     opt=$1
