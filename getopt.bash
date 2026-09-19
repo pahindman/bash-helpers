@@ -1,19 +1,15 @@
 # This script is a small wrapper around the 'getopt' tool and is designed to be sourced by
-# other scripts rather than executed directly. To use it from your own script, first
-# define the shell variables LONGOPTS, SHORTOPTS, PROGRAM_NAME, and PROGRAM_ARGUMENTS in
-# order to configure how to parse arguments, then source this script.  This script uses
-# getopt to parse the arguments to your script ($@) and puts them into a canonical order
-# that can be iterated over in order to implement higher level logic and that reads
-# option/argument values.
+# other scripts rather than executed directly. To use it from your own script, source it
+# with the short options, long options, program name, and program arguments as arguments
+# to this script.  This script uses getopt to parse the arguments to your script ($@) and
+# puts them into a canonical order that can be iterated over in order to implement higher
+# level logic and that reads option/argument values.
 #
 # Usage example:
 #
 #   #!/usr/bin/env bash
-#   LONGOPTS=help,opt:
-#   SHORTOPTS=ho:
-#   PROGRAM_NAME=$(basename "$0")
 #
-#   source getopt.bash
+#   source getopt.bash "ho:" "help,opt:" "$0" "$@"
 #
 #   while true; do
 #       opt=$1
@@ -49,14 +45,22 @@ if [ $? -ne 4 ]; then
     exit 1
 fi
 
+getopt_internal__SHORTOPTS="$1"
+getopt_internal__LONGOPTS="$2"
+getopt_internal__PROGNAME="$3"
+shift 3
+
 # -temporarily store output to be able to check for errors
 # -use '--options' to activate quoting/enhanced mode
 # -pass arguments via '-- "$@"' to separate them correctly
 # -if getopt fails, it writes to stderr
-getopt_internal__OUTPUT=$(getopt --options="${SHORTOPTS}" --longoptions="${LONGOPTS}" --name="${PROGRAM_NAME:-$0}" -- "${PROGRAM_ARGUMENTS[@]:-$@}") || exit 2
+getopt_internal__OUTPUT=$(getopt -o "$getopt_internal__SHORTOPTS" -l "$getopt_internal__LONGOPTS" -n "$getopt_internal__PROGNAME" -- "$@") || exit 2
 
 # read getopt’s output this way to handle the quoting right, and re-set the $@ arguments
 # to be what getopt produced.
 eval set -- "$getopt_internal__OUTPUT"
 
+unset getopt_internal__SHORTOPTS
+unset getopt_internal__LONGOPTS
+unset getopt_internal__PROGNAME
 unset getopt_internal__OUTPUT
