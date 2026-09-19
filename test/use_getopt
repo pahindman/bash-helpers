@@ -27,4 +27,4 @@ done
 
 # do stuff
 echo "option was set to: $option_value"
-echo "non-option arguments: $@"
+echo "non-option arguments: $*"
