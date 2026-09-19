@@ -6,8 +6,11 @@ source trap.bash
 # If no margin size was provided, default to 5
 num=${1:-5}
 
+# shellcheck disable=SC2016
 trap::append_handler_for_signal 'terminal::bottom_margin::reserve $num $LINES' SIGWINCH
+# shellcheck disable=SC2016
 trap::append_handler_for_signal 'terminal::bottom_margin::erase $num $LINES' EXIT
+# shellcheck disable=SC2016
 trap::append_handler_for_signal 'terminal::bottom_margin::reserve 0 $LINES' EXIT
 
 terminal::bottom_margin::reserve "$num" "$LINES"
@@ -41,6 +44,7 @@ done
 read -rsn 1
 
 terminal::bottom_margin::erase "$num" "$LINES"
+# shellcheck disable=SC2016
 trap::remove_handler_for_signal 'terminal::bottom_margin::erase $num $LINES' EXIT
 
 
@@ -49,6 +53,7 @@ terminal::bottom_margin::replace_line 1 "$LINES" "Now the margin has been cleare
 read -rsn 1
 
 terminal::bottom_margin::reserve 0 "$LINES"
+# shellcheck disable=SC2016
 trap::append_handler_for_signal 'terminal::bottom_margin::reserve 0 $LINES' EXIT
 
 echo
