@@ -7,6 +7,7 @@ setup() {
 	LINES=24
 	COLUMNS=80
 
+	# shellcheck disable=SC2329
 	do_work() {
 		local time=0.01
 		local total_work=10
@@ -19,6 +20,7 @@ setup() {
 		echo "did some work"
 	}
 
+	# shellcheck disable=SC2329
 	do_work_with_margin_progress_bar() {
 		source progress_bar.bash
 		progress_bar::start

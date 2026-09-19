@@ -7,10 +7,12 @@ setup() {
 	LINES=24
 	COLUMNS=80
 
+	# shellcheck disable=SC2329
 	do_work() {
 		echo "did some work"
 	}
 
+	# shellcheck disable=SC2329
 	do_work_with_automatic_spinner_at_cursor() {
 		source spinner.bash
 		automatic_spinner::start_at_cursor "Spinner..."
@@ -18,6 +20,7 @@ setup() {
 		spinner::stop "done"
 	}
 
+	# shellcheck disable=SC2329
 	do_work_with_automatic_spinner_in_margin() {
 		source spinner.bash
 		automatic_spinner::start_in_margin "Spinner..."
@@ -25,6 +28,7 @@ setup() {
 		spinner::stop "done"
 	}
 
+	# shellcheck disable=SC2329
 	do_work_with_automatic_spinner_at_cursor_and_custom_sleep_time() {
 		source spinner.bash
 		automatic_spinner::start_at_cursor "Spinner..." 0.2
@@ -32,6 +36,7 @@ setup() {
 		spinner::stop "done"
 	}
 
+	# shellcheck disable=SC2329
 	do_work_with_automatic_spinner_in_margin_and_custom_sleep_time() {
 		source spinner.bash
 		automatic_spinner::start_in_margin "Spinner..." 0.2
@@ -39,6 +44,7 @@ setup() {
 		spinner::stop "done"
 	}
 
+	# shellcheck disable=SC2329
 	do_work_with_manual_spinner_at_cursor() {
 		source spinner.bash
 		manual_spinner::start_at_cursor "Spinner..."
@@ -46,6 +52,7 @@ setup() {
 		spinner::stop "done"
 	}
 
+	# shellcheck disable=SC2329
 	do_work_with_manual_spinner_in_margin() {
 		source spinner.bash
 		manual_spinner::start_in_margin "Spinner..."
