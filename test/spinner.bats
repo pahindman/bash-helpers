@@ -4,60 +4,74 @@ setup() {
 	load 'test_helper/bats-support/load'
 	load 'test_helper/bats-assert/load'
 
-	LINES=24
-	COLUMNS=80
+	export LINES=24
+	export COLUMNS=80
 
 	# shellcheck disable=SC2329
 	do_work() {
 		echo "did some work"
 	}
 
+	export -f do_work
+
 	# shellcheck disable=SC2329
 	do_work_with_automatic_spinner_at_cursor() {
+		bash -c '
 		source spinner.bash
 		automatic_spinner::start_at_cursor "Spinner..."
 		do_work
 		spinner::stop "done"
+		'
 	}
 
 	# shellcheck disable=SC2329
 	do_work_with_automatic_spinner_in_margin() {
+		bash -c '
 		source spinner.bash
 		automatic_spinner::start_in_margin "Spinner..."
 		do_work
 		spinner::stop "done"
+		'
 	}
 
 	# shellcheck disable=SC2329
 	do_work_with_automatic_spinner_at_cursor_and_custom_sleep_time() {
+		bash -c '
 		source spinner.bash
 		automatic_spinner::start_at_cursor "Spinner..." 0.2
 		do_work
 		spinner::stop "done"
+		'
 	}
 
 	# shellcheck disable=SC2329
 	do_work_with_automatic_spinner_in_margin_and_custom_sleep_time() {
+		bash -c '
 		source spinner.bash
 		automatic_spinner::start_in_margin "Spinner..." 0.2
 		do_work
 		spinner::stop "done"
+		'
 	}
 
 	# shellcheck disable=SC2329
 	do_work_with_manual_spinner_at_cursor() {
+		bash -c '
 		source spinner.bash
 		manual_spinner::start_at_cursor "Spinner..."
 		do_work
 		spinner::stop "done"
+		'
 	}
 
 	# shellcheck disable=SC2329
 	do_work_with_manual_spinner_in_margin() {
+		bash -c '
 		source spinner.bash
 		manual_spinner::start_in_margin "Spinner..."
 		do_work
 		spinner::stop "done"
+		'
 	}
 }
 
@@ -104,6 +118,17 @@ teardown() {
 @test "automatic spinner in margin with custom sleep time runs without error" {
 	run --separate-stderr do_work_with_automatic_spinner_in_margin_and_custom_sleep_time 3>/dev/null
 	assert_success
+}
+
+@test "automatic spinner in margin installs parent-shell cleanup trap" {
+	bash -c '
+	source spinner.bash
+	automatic_spinner::start_in_margin "Spinner..."
+	trap -p EXIT
+	spinner::stop "done"
+	' >"$BATS_TEST_TMPDIR/spinner_exit_trap.txt"
+	run cat "$BATS_TEST_TMPDIR/spinner_exit_trap.txt"
+	assert_output --partial "spinner_internal::restore_terminal_and_erase_spinner"
 }
 
 @test "automatic spinner in margin prints start message" {

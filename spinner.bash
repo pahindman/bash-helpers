@@ -45,6 +45,7 @@ automatic_spinner::start_at_cursor() {
 		return 0
 	fi
 
+	trap::append_handler_for_signal terminal::show_cursor EXIT
 	coproc spinner_internal__SPINNER {
 		automatic_spinner::internal::print_at_cursor "$message" "$sleep_time" "${spinner_chars[@]}"
 	}
@@ -60,6 +61,7 @@ automatic_spinner::start_in_margin() {
 		return 0
 	fi
 
+	trap::append_handler_for_signal spinner_internal::restore_terminal_and_erase_spinner EXIT
 	trap::append_handler_for_signal spinner_internal::update_terminal_lines_for_spinner SIGWINCH
 
 	coproc spinner_internal__SPINNER {
@@ -76,6 +78,7 @@ manual_spinner::start_at_cursor() {
 		return 0
 	fi
 
+	trap::append_handler_for_signal terminal::show_cursor EXIT
 	coproc spinner_internal__SPINNER {
 		manual_spinner::internal::print_at_cursor "$message" "${spinner_chars[@]}"
 	}
@@ -90,6 +93,7 @@ manual_spinner::start_in_margin() {
 		return 0
 	fi
 
+	trap::append_handler_for_signal spinner_internal::restore_terminal_and_erase_spinner EXIT
 	trap::append_handler_for_signal spinner_internal::update_terminal_lines_for_spinner SIGWINCH
 
 	coproc spinner_internal__SPINNER {
@@ -108,9 +112,11 @@ spinner::stop() {
 
 	spinner_internal::tell_spinner_to_quit "$message"
 	if [ -v spinner_internal__SPINNER_PID ]; then
-		trap::remove_handler_for_signal spinner_internal::update_terminal_lines_for_spinner SIGWINCH
 		wait "${spinner_internal__SPINNER_PID}"
 		unset spinner_internal__SPINNER_PID
+		trap::remove_handler_for_signal spinner_internal::restore_terminal_and_erase_spinner EXIT
+		trap::remove_handler_for_signal terminal::show_cursor EXIT
+		trap::remove_handler_for_signal spinner_internal::update_terminal_lines_for_spinner SIGWINCH
 	fi
 }
 
@@ -151,7 +157,6 @@ automatic_spinner::internal::print_in_margin() {
 	shift 2
 	local spinner_chars=("${@}")
 
-	trap::append_handler_for_signal spinner_internal::restore_terminal_and_erase_spinner EXIT
 	spinner_internal::configure_terminal
 	terminal::bottom_margin::replace_line 1 "$LINES" "${message}${spinner_chars[-1]}"
 
@@ -161,7 +166,6 @@ automatic_spinner::internal::print_in_margin() {
 			if [[ "$msg1" == "q" ]]; then
 				terminal::bottom_margin::replace_line 1 "$LINES" "${message}${msg2}"
 				spinner_internal::restore_terminal_and_erase_spinner
-				trap::remove_handler_for_signal spinner_internal::restore_terminal_and_erase_spinner EXIT
 				return 0
 			else
 				LINES=$msg1
@@ -184,7 +188,6 @@ automatic_spinner::internal::print_at_cursor() {
 	shift 2
 	local spinner_chars=("${@}")
 
-	trap::append_handler_for_signal terminal::show_cursor EXIT
 	terminal::hide_cursor
 	printf "%s " "$message" >&2
 
@@ -193,7 +196,6 @@ automatic_spinner::internal::print_at_cursor() {
 			IFS=$'\x1C' read -r msg1 msg2
 			if [ "$msg1" == "q" ]; then
 				terminal::show_cursor
-				trap::remove_handler_for_signal terminal::show_cursor EXIT
 				printf "\b%s\n" "$msg2" >&2
 				return 0
 			else
@@ -217,7 +219,6 @@ manual_spinner::internal::print_in_margin() {
 	shift
 	local spinner_chars=("${@}")
 
-	trap::append_handler_for_signal spinner_internal::restore_terminal_and_erase_spinner EXIT
 	spinner_internal::configure_terminal
 	terminal::bottom_margin::replace_line 1 "$LINES" "${message}${spinner_chars[-1]}"
 
@@ -226,7 +227,6 @@ manual_spinner::internal::print_in_margin() {
 		if [[ "$msg1" == "q" ]]; then
 			terminal::bottom_margin::replace_line 1 "$LINES" "${message}${msg2}"
 			spinner_internal::restore_terminal_and_erase_spinner
-			trap::remove_handler_for_signal spinner_internal::restore_terminal_and_erase_spinner EXIT
 			return 0
 		else
 			LINES=$msg1
@@ -244,7 +244,6 @@ manual_spinner::internal::print_at_cursor() {
 	shift
 	local spinner_chars=("${@}")
 
-	trap::append_handler_for_signal terminal::show_cursor EXIT
 	terminal::hide_cursor
 	printf "%s " "$message" >&2
 
@@ -252,7 +251,6 @@ manual_spinner::internal::print_at_cursor() {
 		IFS=$'\x1C' read -r msg1 msg2
 		if [ "$msg1" == "q" ]; then
 			terminal::show_cursor
-			trap::remove_handler_for_signal terminal::show_cursor EXIT
 			printf "\b%s\n" "$msg2" >&2
 			return 0
 		else
