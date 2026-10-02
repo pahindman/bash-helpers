@@ -72,13 +72,44 @@ trap::remove_handler_for_signal() {
 
 ### Private internals ###
 
+trap_internal::unquote_shell_escaped_handler() {
+	local quoted_handler=$1
+	local unquoted_handler=
+	local i
+	local char
+	local next_char
+
+	# Bash prints trap handlers as shell-quoted strings. Strip the surrounding wrapper,
+	# then convert escaped single quotes ("\'" from the shell representation) back to
+	# literal single quotes so the handler text can be compared exactly.
+	if [ "${quoted_handler:0:1}" = "'" ] && [ "${quoted_handler: -1}" = "'" ]; then
+		quoted_handler=${quoted_handler:1:${#quoted_handler}-2}
+	fi
+
+	for ((i = 0; i < ${#quoted_handler}; i++)); do
+		char=${quoted_handler:i:1}
+		if [ "$char" = '\\' ] && [ $((i + 1)) -lt ${#quoted_handler} ] && [ "${quoted_handler:i+1:1}" = "'" ]; then
+			unquoted_handler+="'"
+			((i++))
+		else
+			unquoted_handler+="$char"
+		fi
+	done
+
+	echo "$unquoted_handler"
+}
+
 trap_internal::get_handler_for_signal() {
 	local signal=$1
 	local handler
-	handler=$(trap -p "$signal")
-	handler=${handler#*\'}
-	handler=${handler%%\'*}
-	echo "$handler"
+	handler=$(trap -p "$signal" 2>/dev/null || true)
+	if [ -z "$handler" ]; then
+		return 0
+	fi
+
+	handler=${handler#trap -- }
+	handler=${handler% "${signal}"}
+	trap_internal::unquote_shell_escaped_handler "$handler"
 }
 
 trap_internal::remove_last_handler() {

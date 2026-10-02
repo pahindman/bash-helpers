@@ -109,3 +109,13 @@ teardown() {
 	refute_output --partial 'printf "%s" "[^a-z]*.txt"'
 	assert_output --partial "second_test_handler"
 }
+
+@test "removing handler with single quotes and semicolon works" {
+	source trap.bash
+	trap::append_handler_for_signal "printf '%s\\n' 'quoted;test'" EXIT
+	trap::append_handler_for_signal second_test_handler EXIT
+	trap::remove_handler_for_signal "printf '%s\\n' 'quoted;test'" EXIT
+	run trap -p EXIT
+	assert_output --partial "second_test_handler"
+	refute_output --partial "printf '%s\\n' 'quoted;test'"
+}
