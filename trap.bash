@@ -109,7 +109,8 @@ trap_internal::get_handler_for_signal() {
 
 	handler=${handler#trap -- }
 	handler=${handler% "${signal}"}
-	trap_internal::unquote_shell_escaped_handler "$handler"
+	eval "handler=$handler"
+	echo "$handler"
 }
 
 trap_internal::remove_last_handler() {
