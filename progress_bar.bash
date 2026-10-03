@@ -54,13 +54,13 @@ source "${progress_bar_internal__SOURCE_DIR}/trap.bash"
 unset progress_bar_internal__SOURCE_DIR
 
 progress_bar_internal::generate_progress_bar_string() {
-	local caption='Progress:'
 	local bar_char='#'
+	local caption='Progress:'
 	local empty_char=' '
 	local num
 	local total
 
-	local OPTARG OPTIND opt num total
+	local OPTARG OPTIND opt
 	while getopts 'b:c:e:n:t:' opt; do
 		case "$opt" in
 			b) bar_char=$OPTARG;;
