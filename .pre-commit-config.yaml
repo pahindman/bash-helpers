@@ -1,14 +1,34 @@
 repos:
 - repo: local
   hooks:
-  - id: relevant-bats-tests
-    name: Run Relevant Bats Tests
+  - id: getopt-bats-tests
+    name: getopt Tests
     entry: test/bats-precommit-wrapper
     language: node
-    # This tells pre-commit to install bats automatically
     additional_dependencies:
-      - bats@1.11.0
-    pass_filenames: true
+    - bats@1.11.0
+    files: getopt
+  - id: progress_bar-bats-tests
+    name: progress_bar Tests
+    entry: test/bats-precommit-wrapper
+    language: node
+    additional_dependencies:
+    - bats@1.11.0
+    files: progress_bar
+  - id: spinner-bats-tests
+    name: spinner Tests
+    entry: test/bats-precommit-wrapper
+    language: node
+    additional_dependencies:
+    - bats@1.11.0
+    files: spinner
+  - id: trap-bats-tests
+    name: trap Tests
+    entry: test/bats-precommit-wrapper
+    language: node
+    additional_dependencies:
+    - bats@1.11.0
+    files: trap
 - repo: https://github.com/shellcheck-py/shellcheck-py
   rev: v0.11.0.1
   hooks:
