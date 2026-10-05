@@ -137,11 +137,7 @@ terminal::get_cursor_location() {
 		return 0
 	fi
 
-	# The response is in the format "\e[row;colR", so we need to parse it
-	local cursor_location
-	# shellcheck disable=SC2034
-	IFS='[' read -p $'\E[6n' -s -r -d 'R' _ cursor_location
-	echo "${cursor_location%R}"
+	terminal::internal::get_cursor_location
 }
 
 terminal::get_row() {
@@ -169,6 +165,14 @@ terminal::set_scroll_region() {
 }
 
 ### Private internals ###
+
+terminal::internal::get_cursor_location() {
+	# The response is in the format "\e[row;colR", so we need to parse it
+	local cursor_location
+	# shellcheck disable=SC2034
+	IFS='[' read -p $'\E[6n' -s -r -d 'R' _ cursor_location
+	echo "${cursor_location%R}"
+}
 
 terminal_internal::scroll_terminal_content_if_necessary() {
 	local margin_size=$1
