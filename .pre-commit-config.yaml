@@ -1,3 +1,5 @@
+ci:
+  submodules: true
 repos:
 - repo: local
   hooks:
