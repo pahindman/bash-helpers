@@ -6,31 +6,29 @@ setup() {
 
 	LINES=24
 	COLUMNS=80
-
-	# shellcheck disable=SC2329
-	do_work() {
-		local time=0.01
-		local total_work=10
-		local i
-		for ((i = 0; i < total_work; i++)); do
-			sleep "$time"
-			progress_bar::update -c "work done " -n "$i" -t "$total_work" >&2
-		done
-		progress_bar::update -c "work done " -n "$total_work" -t "$total_work" >&2
-		echo "did some work"
-	}
-
-	# shellcheck disable=SC2329
-	do_work_with_margin_progress_bar() {
-		source progress_bar.bash
-		progress_bar::start
-		do_work
-		progress_bar::stop
-	}
 }
 
 teardown() {
 	:
+}
+
+do_work() {
+	local time=0.01
+	local total_work=10
+	local i
+	for ((i = 0; i < total_work; i++)); do
+		sleep "$time"
+		progress_bar::update -c "work done " -n "$i" -t "$total_work" >&2
+	done
+	progress_bar::update -c "work done " -n "$total_work" -t "$total_work" >&2
+	echo "did some work"
+}
+
+do_work_with_margin_progress_bar() {
+	source progress_bar.bash
+	progress_bar::start
+	do_work
+	progress_bar::stop
 }
 
 # bats file_tags=progress_bar,terminal,trap
