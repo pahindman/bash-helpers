@@ -1,5 +1,8 @@
 # bash-helpers
 
+[![CI](https://github.com/pahindman/bash-helpers/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/pahindman/bash-helpers/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 A small collection of Bash utility scripts for terminal status indicators and argument parsing. The scripts are designed to be sourced from other Bash scripts rather than executed directly.
 
 ## Included helpers
