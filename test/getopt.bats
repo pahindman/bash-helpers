@@ -3,7 +3,7 @@ setup() {
 	load 'test_helper/bats-assert/load'
 
 	# get the containing directory of this file
-	DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
+	DIR="$(cd "$(dirname "$BATS_TEST_FILENAME")" >/dev/null 2>&1 && pwd)"
 	PATH="$DIR:$PATH"
 }
 

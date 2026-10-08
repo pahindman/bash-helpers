@@ -91,7 +91,7 @@ trap_internal::remove_last_handler() {
 	local i
 
 	for ((i = 0; i <= existing_handler_length - handler_to_remove_length; i++)); do
-		if [ "${existing_handler:$i:$handler_to_remove_length}" != "$handler_to_remove" ]; then
+		if [ "${existing_handler:i:handler_to_remove_length}" != "$handler_to_remove" ]; then
 			continue
 		fi
 
@@ -116,7 +116,7 @@ trap_internal::remove_last_handler() {
 		return 0
 	fi
 
-	local updated_handler=${existing_handler:0:$match_start}${existing_handler:$match_end}
+	local updated_handler=${existing_handler:0:match_start}${existing_handler:match_end}
 	updated_handler=${updated_handler//;;/;}
 	updated_handler=${updated_handler#;}
 	updated_handler=${updated_handler%;}

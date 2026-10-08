@@ -41,8 +41,8 @@
 # ignore errexit with `&& true`
 getopt --test >/dev/null 2>&1 && true
 if [ $? -ne 4 ]; then
-    echo "This script requires 'getopt', but couldn't find it."
-    exit 1
+	echo "This script requires 'getopt', but couldn't find it."
+	exit 1
 fi
 
 getopt_internal__SHORTOPTS="$1"

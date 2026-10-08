@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-BASH_SOURCE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BASH_SOURCE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 read -n 1 -s -r -p "######## Press key to run use_terminal ########"
 echo
