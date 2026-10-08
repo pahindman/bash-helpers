@@ -48,7 +48,7 @@ progress_bar::stop() {
 
 ### Private internals ###
 
-progress_bar_internal__SOURCE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+progress_bar_internal__SOURCE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 source "${progress_bar_internal__SOURCE_DIR}/terminal.bash"
 source "${progress_bar_internal__SOURCE_DIR}/trap.bash"
 unset progress_bar_internal__SOURCE_DIR
@@ -63,12 +63,15 @@ progress_bar_internal::generate_progress_bar_string() {
 	local OPTARG OPTIND opt
 	while getopts 'b:c:e:n:t:' opt; do
 		case "$opt" in
-			b) bar_char=$OPTARG;;
-			c) caption=$OPTARG;;
-			e) empty_char=$OPTARG;;
-			n) num=$OPTARG;;
-			t) total=$OPTARG;;
-			*) echo "bad option: $opt" >&2; exit 1;;
+		b) bar_char=$OPTARG ;;
+		c) caption=$OPTARG ;;
+		e) empty_char=$OPTARG ;;
+		n) num=$OPTARG ;;
+		t) total=$OPTARG ;;
+		*)
+			echo "bad option: $opt" >&2
+			exit 1
+			;;
 		esac
 	done
 
@@ -80,11 +83,11 @@ progress_bar_internal::generate_progress_bar_string() {
 		echo 'missing total argument' >&2
 		return 1
 	fi
-	if ! [[ "$num" =~ ^-?[0-9]+$ ]]; then
+	if ! [[ $num =~ ^-?[0-9]+$ ]]; then
 		echo "invalid num argument: '$num'" >&2
 		return 1
 	fi
-	if ! [[ "$total" =~ ^[0-9]+$ ]]; then
+	if ! [[ $total =~ ^[0-9]+$ ]]; then
 		echo "invalid total argument: '$total'" >&2
 		return 1
 	fi

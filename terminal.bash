@@ -50,7 +50,7 @@ terminal::bottom_margin::erase() {
 	local margin_line
 
 	terminal::save_cursor_position
-	for ((margin_line=top_margin_line; margin_line <= total_lines; margin_line++)); do
+	for ((margin_line = top_margin_line; margin_line <= total_lines; margin_line++)); do
 		terminal::move_cursor_to_row_column "$margin_line" 0
 		terminal::erase_entire_cursor_line
 	done
@@ -144,7 +144,7 @@ terminal::get_row() {
 	local cursor_location=$1
 
 	local row column
-	IFS=';' read -s -r row column <<< "$cursor_location"
+	IFS=';' read -s -r row column <<<"$cursor_location"
 	echo "${row}"
 }
 

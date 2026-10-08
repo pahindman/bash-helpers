@@ -3,26 +3,26 @@
 source getopt.bash "ho:" "help,opt:" "$0" "$@"
 
 while true; do
-    opt=$1
-    shift
-    case "$opt" in
-        -h|--help)
-            echo "Usage: $0 [-h|--help] [-o|--opt]"
-            exit 0
-            ;;
-        -o|--opt)
-            option_value="$1"
-            shift
-            ;;
-        --)
-            break
-            ;;
-        *)
-            echo "Error: getopt was configured incorrectly." >&2
-            echo "Error: Contact the author of '$0'" >&2
-            exit 3
-            ;;
-    esac
+	opt=$1
+	shift
+	case "$opt" in
+	-h | --help)
+		echo "Usage: $0 [-h|--help] [-o|--opt]"
+		exit 0
+		;;
+	-o | --opt)
+		option_value="$1"
+		shift
+		;;
+	--)
+		break
+		;;
+	*)
+		echo "Error: getopt was configured incorrectly." >&2
+		echo "Error: Contact the author of '$0'" >&2
+		exit 3
+		;;
+	esac
 done
 
 # do stuff

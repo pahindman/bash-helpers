@@ -30,7 +30,7 @@
 #     # Your long-running command here
 #     spinner::stop "done"
 
-spinner_internal__SOURCE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+spinner_internal__SOURCE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 source "${spinner_internal__SOURCE_DIR}/terminal.bash"
 
 ### Public API ###
@@ -163,7 +163,7 @@ automatic_spinner::internal::print_in_margin() {
 	while true; do
 		if read -t 0; then
 			IFS=$'\x1C' read -r msg1 msg2
-			if [[ "$msg1" == "q" ]]; then
+			if [[ $msg1 == "q" ]]; then
 				terminal::bottom_margin::replace_line 1 "$LINES" "${message}${msg2}"
 				spinner_internal::restore_terminal_and_erase_spinner
 				return 0
@@ -224,7 +224,7 @@ manual_spinner::internal::print_in_margin() {
 
 	while true; do
 		IFS=$'\x1C' read -r msg1 msg2
-		if [[ "$msg1" == "q" ]]; then
+		if [[ $msg1 == "q" ]]; then
 			terminal::bottom_margin::replace_line 1 "$LINES" "${message}${msg2}"
 			spinner_internal::restore_terminal_and_erase_spinner
 			return 0
